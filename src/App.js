@@ -15,13 +15,15 @@ import {
 import mapboxgl from 'mapbox-gl';
 
 function App() {
+  // Setter opp verdier
   let map = null;
   let points = [];
   const mapElement = useRef(null);
   const [pageData, setPageData] = useState(null);
   Mapbox.accessToken = process.env.MAPBOX_API_KEY;
-  const yr = require("yr-forecast");
+  const yr = require("yr-forecast"); //Bruker yr-forecast til å hente vær
   const defaultCor = [10.394199663947818, 63.43072950793196];
+  //Setter opp diagram
   const [chartState, setChartState] = useState({
     data: [],
     layout: {
@@ -33,6 +35,7 @@ function App() {
     config: { responsive: true, staticPlot: true, autosize: true }
   });
 
+  //Henter inn data fra Cosmic.js
   useEffect(() => {
     const client = new Cosmic();
     const bucket = client.bucket({
@@ -51,6 +54,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    //Setter opp Mapbox-kart
     map = new Mapbox.Map({
       container: mapElement.current,
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -58,6 +62,7 @@ function App() {
       zoom: 11.5
     })
 
+    //Setter opp kartmarkører med data fra Cosmic. Bruker en koordinater-string, som den deler i to og koverter til tall
     if (pageData != null && map != null) {
       pageData.objects.map(item => {
         let cor = item.metafields[0].value.split(',');
@@ -79,6 +84,7 @@ function App() {
         });
       });
     }
+    //Henter inn værdata fra yr med default coordinates (defaultCor) og setter inn i chart data
     yr.getForecast(defaultCor[1], defaultCor[0])
       .then(data => {
         let chartData = {
@@ -99,6 +105,7 @@ function App() {
       });
   }, [pageData]);
 
+  //Rendrer link til alle sidene man kan få tilgang på hvis data er lastet inn
   function StopList() {
     return (
       (pageData === null) ? (<p>"Henter innhold"</p>) :
@@ -120,7 +127,7 @@ function App() {
         <a href='/'>Start</a>
         {StopList()}
       </nav>
-      <div style={{ height: '500px' }} ref={mapElement}></div>
+      <div style={{ height: '500px' }} tabindex="-1" ref={mapElement}></div>
 
       <Switch>
         <Route path='/stops/:slug' component={StopPage} />
@@ -135,6 +142,8 @@ function App() {
         onInitialized={(figure) => setChartState(figure)}
         onUpdate={(figure) => setChartState(figure)}
         style={{ width: 100 + '%' }}
+        tabindex="0"
+        aria-label="Temperaturen i Trondheim det neste døgnet hentet fra yr.no"
       />
     </Router>
   )

@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
         max-width: 1080px;
         margin: 10px auto;
     }
+    .stops {
+        display: flex;
+        flex-wrap: wrap;
+    }
     .stops > a {
         margin: 5px;
         background: lightblue;

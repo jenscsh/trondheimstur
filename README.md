@@ -1,1 +1,1 @@
-I denne oppgaven har jeg forsøkt å lage en tur gjennom Trondheims viktigste attraksjoner.
+Laget med React, Cosmic.js, Plotly, Mapbox og yr-forecast. Bruk npm install for å installere, deretter npm start. Siden åpnes i localhost:8080

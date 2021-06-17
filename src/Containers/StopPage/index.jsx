@@ -4,9 +4,9 @@ import Plot from 'react-plotly.js';
 import Mapbox from 'mapbox-gl';
 
 function StopPage({ match }) {
-    const yr = require('yr-forecast');
     const [pageData, setPageData] = useState(null);
 
+    //Henter overskrift og artikkeldata fra Cosmic
     useEffect(() => {
         const client = new Cosmic();
         const bucket = client.bucket({
